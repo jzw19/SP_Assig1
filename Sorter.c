@@ -8,17 +8,17 @@ FILE *file;
 
 
 void printData(LL* dlist, data cdata){ //cmov = currentdata, prints the contents of a data struct
-     int n=0;
-     for(n = 0;n < dlist->numfields;n++){
-       printf("%s: %s\n",dlist->fields[n], cdata.fielddata[n]);
+     int n=0; //initialize counter n
+     for(n = 0;n < dlist->numfields;n++){ //loop through all fields. dlist->numfields is an integer value of the total number of fields in the csv
+       printf("%s: %s\n",dlist->fields[n], cdata.fielddata[n]); //print the field name and data in field
      }
 }
 
-void printTypes(LL* dlist){
-  int n = 0;
-  for(n = 0; n < dlist->numfields; n++){
-   printf("%s type:", dlist->fields[n]);
-   if(dlist->types[n] == 0){
+void printTypes(LL* dlist){ //function to print type. Values in types[n] can ONLY be 0, 1 or 2.
+  int n = 0; //initialize counter n
+  for(n = 0; n < dlist->numfields; n++){ //loop through all fields
+   printf("%s type: ", dlist->fields[n]); //print field name
+   if(dlist->types[n] == 0){ //decide which type to print based on value stored in types[n]. 0 = String (char[]), 1 = long, 2 = float
    printf("String\n"); 
    }
    else if(dlist->types[n] == 1){
@@ -53,9 +53,9 @@ void addTail(LL* dlist, data cdata){ //takes a linked list and a data, adds the 
 }
 
 void Finish(LL* dlist){ //frees everything in a LL
-  Node* temp = dlist->head;
+  Node* temp = dlist->head; //initialize node pointer at head of data list
   int n = 0;
-  while(temp!= NULL){
+  while(temp!= NULL){ //go through entire LL
    char** ftemp = temp->ndata.fielddata;
    for(n = 0;n < dlist->numfields;n++){
     free(ftemp[n]); 
@@ -277,7 +277,7 @@ int main(int argc, char *argv[]){
   
   if(argc >= 3){
     if(strcmp("-c", argv[1]) == 0){  
-  mergeSortBegin(dlist, argv[2]);
+      mergeSortBegin(dlist, argv[2]);
     }
   }
  
