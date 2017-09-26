@@ -57,10 +57,15 @@ void Finish(LL* dlist){ //frees everything in a LL
   int n = 0;
   while(temp!= NULL){ //go through entire LL
    char** ftemp = temp->ndata.fielddata;
-   for(n = 0;n < dlist->numfields;n++){
-    free(ftemp[n]); 
-   }
-   free(ftemp);
+   
+  for(n = 0;n < dlist->numfields;n++){
+   free(ftemp[n]);
+  }
+  free(ftemp);
+   
+   if(temp->ndata.comma != NULL){
+     free(temp->ndata.comma);
+    }
   Node* oldtemp = temp;  
   temp = temp->next;
   free(oldtemp);
@@ -85,7 +90,9 @@ void initializeList(LL* dlist, char* fields){ //initializes the numfields, types
     }
   dlist->numfields = totalfields;
   dlist->types = (int*) malloc(sizeof(int)*dlist->numfields); //allocates fields for keeping track of what type each field is, to be used once all data is received
+  memset(dlist->types, 0, sizeof(int)*dlist->numfields);
   dlist->fields = (char**) malloc(sizeof(char*)*dlist->numfields); //keeps track of the name of the fields, to be used later when sorting
+  memset(dlist->fields, 0, sizeof(char*)*dlist->numfields);
   free(temp);
   temp = strdup(fields);
   currvar = (char*) strtok(temp, ",");
@@ -216,6 +223,7 @@ int main(int argc, char *argv[]){
   int quote = 0;
   data cdatanode = {};
   cdatanode.fielddata = (char**) malloc(sizeof(char*)*dlist->numfields);
+  memset(cdatanode.fielddata, 0, sizeof(char*)*dlist->numfields);
   cdatanode.comma = NULL;
   memset(test, 0 , sizeof(char)*1000);
   while((c = fgetc(file)) != EOF){
@@ -263,13 +271,7 @@ int main(int argc, char *argv[]){
   free(test);
   
   
-  //printData(dlist,dlist->head->ndata);
-  //printData(dlist,dlist->head->next->ndata); 
-  //printData(dlist,dlist->tail->ndata);
   initializeListTypes(dlist);
-  //printTypes(dlist);
-  
-  //mergeSort(dlist, dlist->fields[25]); 
   
   int n = 0;
   Node* temp = dlist->head;
@@ -282,6 +284,5 @@ int main(int argc, char *argv[]){
   }
  
   export(dlist); //exports the dlist into csv
-//  printData(dlist, split(dlist,dlist->head)->ndata);
- // Finish(dlist); //frees everything in dlist  
+  Finish(dlist); //frees everything in dlist  
 }

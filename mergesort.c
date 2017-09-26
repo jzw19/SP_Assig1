@@ -112,5 +112,23 @@ Node* merge(LL* dlist, Node* left, Node* right){
     }
     return final;
   }
+  else if(dlist->sortingtype == 1){ //if sorting longs
+    
+    char** lendptr = NULL;
+    char** rendptr = NULL;
+    long leftlong = strtol(left->ndata.fielddata[dlist->sortingfield], lendptr,10);
+    long rightlong = strtol(right->ndata.fielddata[dlist->sortingfield], rendptr,10);
+    Node* final = NULL;
+    if(leftlong <= rightlong){
+     final = left;
+     final->next = merge(dlist,left->next,right);
+    }
+    else{
+      final = right;
+      final->next = merge(dlist,left,right->next);
+    }
+    return final;
+  }
+    
   
 }
