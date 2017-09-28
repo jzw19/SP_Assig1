@@ -1,0 +1,55 @@
+mergeSortBegin
+
+	NAME
+		mergeSortBegin - checks if a given data struct array can be sorted by a given field.
+
+	SYNOPSIS
+		#include "mergesort.c"
+		mergeSortBegin(LL* dlist, char* field);
+
+	DESCRIPTION
+		mergeSortBegin takes in a data struct array and a field to sort by. mergeSortBegin first checks if the data struct array received is empty,
+		then searches the data struct array for the target field. If the field is found, the type of the field is also determined by the integer
+		stored in the field array. If either the data struct array is empty or the field is not found, an error message is returned.
+
+mergeSort
+
+	NAME
+		mergeSort - performs mergesort on a set of data.
+
+	SYNOPSIS
+		#include "mergesort.c"
+		mergeSort(LL* dlist, Node* head);
+
+	DESCRIPTION
+		Performs mergesort on a data struct array.
+
+split
+
+	NAME
+		split - finds and returns a pointer to the middle node.
+
+	SYNOPSIS
+		#include "mergesort.c"
+		split(Node* head)
+
+	DESCRIPTION
+		Given a head node, find and return a pointer to the middle node. If the head node is null or is the only node in the list, return NULL.
+
+merge
+	
+	NAME
+		merge - performs the actual sorting in mergeSort based on data type.
+
+	SYNOPSIS
+		#include "mergesort.c"
+		merge(LL* dlist, Node* left, Node* right);
+
+	DESCRIPTION
+		Performs the mergesort algorithm based on data type. Takes in arguments for the data struct array, starting left node and starting right node.
+
+
+printData
+	
+	NAME
+		printData - 
