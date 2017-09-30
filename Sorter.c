@@ -244,6 +244,10 @@ void trimSpaces(char* str){
 int main(int argc, char *argv[]){
   //Constructs an array containing all of the data data into cdata
   file = stdin;
+   if(ftell(file) == -1){
+    printf("No file found.\n");
+   return; 
+   }
   LL* dlist = (LL*) malloc(sizeof(LL)); //malloc a data linked list to which data nodes will be added
   char* test = (char*) malloc(sizeof(char)*1000); //for getting data from the file
   memset(test, 0 , sizeof(char)*1000);
