@@ -8,7 +8,7 @@ FILE *file;
 
 int mergeSortBegin(LL* dlist, char* field){ //takes in a data struct array and a field to sort by
   if((dlist->head == NULL) || (dlist->head == dlist->tail)){ //if no nodes or one nodes, already solved
-    printf("There are no entries in the csv, cannot sort.");
+    printf("There are no entries in the csv, cannot sort.\n");
    return -1;
   }
   int n = 0;
