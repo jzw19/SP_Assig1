@@ -1,8 +1,9 @@
 #include "Sorter.h"
+#include "mergesort.c"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mergesort.c"
+#include <ctype.h>
 
 FILE *file;
 
