@@ -314,10 +314,17 @@ int main(int argc, char *argv[]){
   
   if(argc >= 3){
     if(strcmp("-c", argv[1]) == 0){  
-      mergeSortBegin(dlist, argv[2]);
+      int status = mergeSortBegin(dlist, argv[2]);
+      if(status == 0){ //only prints the field if no errors occurred
+	export(dlist); //exports the dlist into csv
+      }
     }
   }
+  else{
+  printf("Nothing to sort. Please input a field to sort by with -c.\n");
+  return;
+  }
  
-  export(dlist); //exports the dlist into csv
+  
   Finish(dlist); //frees everything in dlist  
 }

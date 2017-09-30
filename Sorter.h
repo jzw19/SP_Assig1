@@ -36,7 +36,7 @@ char** fields; //keeps track of the name fields
 }LL;
 
 //Suggestion: prototype a mergesort function
-LL* mergesortBegin(LL* dlist, char* field);
+int mergesortBegin(LL* dlist, char* field);
 Node* mergeSort(LL* dlist, Node* head);
 Node* split(Node* head);
 Node* merge(LL* dlist, Node* left, Node* right);

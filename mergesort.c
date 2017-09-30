@@ -6,10 +6,10 @@
 
 FILE *file;
 
-void mergeSortBegin(LL* dlist, char* field){ //takes in a data struct array and a field to sort by
+int mergeSortBegin(LL* dlist, char* field){ //takes in a data struct array and a field to sort by
   if((dlist->head == NULL) || (dlist->head == dlist->tail)){ //if no nodes or one nodes, already solved
     printf("There are no entries in the csv, cannot sort.");
-   return;
+   return -1;
   }
   int n = 0;
   int found = 0;
@@ -21,11 +21,12 @@ void mergeSortBegin(LL* dlist, char* field){ //takes in a data struct array and 
   }
   if(found == 0){
    printf("Field not found. Please sort by one of the fields in the csv file.\n");
+   return -1;
   }
   
   dlist->sortingtype =  dlist->types[dlist->sortingfield];
   dlist->head = mergeSort(dlist,dlist->head);
-  
+  return 0;
 }
 
 Node* mergeSort(LL* dlist, Node* head){//note: String's mergesort
