@@ -31,7 +31,7 @@ int count; //count of total nodes in list
 int numfields; //count of the total fields in the csv
 int sortingfield; //keeps track of the field to be sorted, where sortingfield = # field sorted
 int sortingtype; //keeps track of what type is being sorted, 0 = string, 1 = int, 2 = float
-int* types; //keeps track of types, 0 = string, 1 = int, 2 = float
+int* types; //keeps track of types, 0 = string, 1 = long, 2 = float
 char** fields; //keeps track of the name fields
 }LL;
 

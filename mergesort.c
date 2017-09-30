@@ -84,7 +84,7 @@ Node* merge(LL* dlist, Node* left, Node* right){
   if(dlist->sortingtype == 0){ //if sorting a string
     
     //alphabetic sorting method
-    /*
+   
     char* leftstr = strdup(left->ndata.fielddata[dlist->sortingfield]);
     int n = 0;
     for(n = 0;n < strlen(leftstr);n++){
@@ -95,10 +95,10 @@ Node* merge(LL* dlist, Node* left, Node* right){
     for(n = 0;n < strlen(rightstr);n++){
      rightstr[n] = tolower(rightstr[n]); 
     }
-    */
+
     
-    char* leftstr = left->ndata.fielddata[dlist->sortingfield];
-    char* rightstr = right->ndata.fielddata[dlist->sortingfield];
+  //  char* leftstr = left->ndata.fielddata[dlist->sortingfield];
+  //  char* rightstr = right->ndata.fielddata[dlist->sortingfield];
        
     int cmp = strcmp(leftstr,rightstr);
     Node* final = NULL;
@@ -110,7 +110,44 @@ Node* merge(LL* dlist, Node* left, Node* right){
       final = right;
       final->next = merge(dlist,left,right->next);
     }
+    free(leftstr);
+    free(rightstr);
     return final;
   }
+  else if(dlist->sortingtype == 1){ //if sorting longs
+    
+    char** lendptr = NULL;
+    char** rendptr = NULL;
+    long leftlong = strtol(left->ndata.fielddata[dlist->sortingfield], lendptr,10);
+    long rightlong = strtol(right->ndata.fielddata[dlist->sortingfield], rendptr,10);
+    Node* final = NULL;
+    if(leftlong <= rightlong){
+     final = left;
+     final->next = merge(dlist,left->next,right);
+    }
+    else{
+      final = right;
+      final->next = merge(dlist,left,right->next);
+    }
+    return final;
+  }
+  else{ //if sorting neither longs or strings, must be sorting floats
+    char** lendptr = NULL;
+    char** rendptr = NULL;
+    float leftfl = strtof(left->ndata.fielddata[dlist->sortingfield], lendptr);
+    float rightfl = strtof(right->ndata.fielddata[dlist->sortingfield], rendptr);
+    Node* final = NULL;
+    if(leftfl <= rightfl){
+     final = left;
+     final->next = merge(dlist,left->next,right);
+    }
+    else{
+      final = right;
+      final->next = merge(dlist,left,right->next);
+    }
+    return final;
+    
+  }
+    
   
 }
