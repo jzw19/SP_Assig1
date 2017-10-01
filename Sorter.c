@@ -287,7 +287,6 @@ int main(int argc, char *argv[]){
     }
     else if(c == '"'){
       if(quote == 0){
-	//insert comma handling here, somehow
 	cdatanode.comma = (int*) malloc(sizeof(int)*dlist->numfields);
 	memset(cdatanode.comma,0,sizeof(sizeof(int)*dlist->numfields));
 	cdatanode.comma[currentvar] = 1;
