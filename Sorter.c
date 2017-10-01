@@ -1,24 +1,25 @@
 #include "Sorter.h"
+#include "mergesort.c"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mergesort.c"
+#include <ctype.h>
 
 FILE *file;
 
 
 void printData(LL* dlist, data cdata){ //cmov = currentdata, prints the contents of a data struct
-     int n=0;
-     for(n = 0;n < dlist->numfields;n++){
-       printf("%s: %s\n",dlist->fields[n], cdata.fielddata[n]);
+     int n=0; //initialize counter n
+     for(n = 0;n < dlist->numfields;n++){ //loop through all fields. dlist->numfields is an integer value of the total number of fields in the csv
+       printf("%s: %s\n",dlist->fields[n], cdata.fielddata[n]); //print the field name and data in field
      }
 }
 
-void printTypes(LL* dlist){
-  int n = 0;
-  for(n = 0; n < dlist->numfields; n++){
-   printf("%s type:", dlist->fields[n]);
-   if(dlist->types[n] == 0){
+void printTypes(LL* dlist){ //function to print type. Values in types[n] can ONLY be 0, 1 or 2.
+  int n = 0; //initialize counter n
+  for(n = 0; n < dlist->numfields; n++){ //loop through all fields
+   printf("%s type: ", dlist->fields[n]); //print field name
+   if(dlist->types[n] == 0){ //decide which type to print based on value stored in types[n]. 0 = String (char[]), 1 = long, 2 = float
    printf("String\n"); 
    }
    else if(dlist->types[n] == 1){
@@ -53,14 +54,19 @@ void addTail(LL* dlist, data cdata){ //takes a linked list and a data, adds the 
 }
 
 void Finish(LL* dlist){ //frees everything in a LL
-  Node* temp = dlist->head;
+  Node* temp = dlist->head; //initialize node pointer at head of data list
   int n = 0;
-  while(temp!= NULL){
+  while(temp!= NULL){ //go through entire LL
    char** ftemp = temp->ndata.fielddata;
-   for(n = 0;n < dlist->numfields;n++){
-    free(ftemp[n]); 
-   }
-   free(ftemp);
+   
+  for(n = 0;n < dlist->numfields;n++){
+   free(ftemp[n]);
+  }
+  free(ftemp);
+   
+   if(temp->ndata.comma != NULL){
+     free(temp->ndata.comma);
+    }
   Node* oldtemp = temp;  
   temp = temp->next;
   free(oldtemp);
@@ -85,7 +91,9 @@ void initializeList(LL* dlist, char* fields){ //initializes the numfields, types
     }
   dlist->numfields = totalfields;
   dlist->types = (int*) malloc(sizeof(int)*dlist->numfields); //allocates fields for keeping track of what type each field is, to be used once all data is received
+  memset(dlist->types, 0, sizeof(int)*dlist->numfields);
   dlist->fields = (char**) malloc(sizeof(char*)*dlist->numfields); //keeps track of the name of the fields, to be used later when sorting
+  memset(dlist->fields, 0, sizeof(char*)*dlist->numfields);
   free(temp);
   temp = strdup(fields);
   currvar = (char*) strtok(temp, ",");
@@ -199,9 +207,47 @@ void export(LL* dlist){
 }
 }
 
+
+void trimSpaces(char* str){
+  int n = 0;
+  for(n = strlen(str)-1; n >= 0;n--){ //trims trailing whitespace and garbage characters
+    if(isblank(str[n]) || str[n] < 0){
+    str[n] = 0;
+    }
+  else{
+    break;
+    }
+  }
+  char* tempptr = str;
+  for(n = 0; n < strlen(str)-1;n++){ //iterate through the array until the first non-blank letter
+   if(isblank(str[n]) == 0){
+     break;
+   }
+     
+  }
+  
+  int m = n;
+  int end = strlen(str)-n;
+  if(n > 0){
+    for(n=n; n > 0;n--){ //shifts over non-blank characters at the beginning
+    for(m = n;m < strlen(str); m++){
+      str[m-1] = str[m];
+    }
+      
+      
+  }
+  str[end] = 0; //gets rid of characters past the new ending point, which is the old string length - the number of spaces at the beginning
+  }
+  return;
+}
+
 int main(int argc, char *argv[]){
   //Constructs an array containing all of the data data into cdata
   file = stdin;
+   if(ftell(file) == -1){
+    printf("No file found.\n");
+   return; 
+   }
   LL* dlist = (LL*) malloc(sizeof(LL)); //malloc a data linked list to which data nodes will be added
   char* test = (char*) malloc(sizeof(char)*1000); //for getting data from the file
   memset(test, 0 , sizeof(char)*1000);
@@ -216,15 +262,12 @@ int main(int argc, char *argv[]){
   int quote = 0;
   data cdatanode = {};
   cdatanode.fielddata = (char**) malloc(sizeof(char*)*dlist->numfields);
+  memset(cdatanode.fielddata, 0, sizeof(char*)*dlist->numfields);
   cdatanode.comma = NULL;
   memset(test, 0 , sizeof(char)*1000);
-  while((c = fgetc(file)) != EOF){
-    /*
-    if(c < 0 || c > 128){
-      continue;
-    }
-    */
+  while((c = fgetc(file)) != EOF){    
     if((c == ',' || c == '\n') && (quote == 0)){
+      trimSpaces(test);
       cdatanode.fielddata[currentvar] = strdup(test); //copy test to cdatanode STRDUP IS MALLOC, REMEMBER TO FREE
       if(c == '\n'){
       addTail(dlist, cdatanode);
@@ -263,13 +306,7 @@ int main(int argc, char *argv[]){
   free(test);
   
   
-  //printData(dlist,dlist->head->ndata);
-  //printData(dlist,dlist->head->next->ndata); 
-  //printData(dlist,dlist->tail->ndata);
   initializeListTypes(dlist);
-  //printTypes(dlist);
-  
-  //mergeSort(dlist, dlist->fields[25]); 
   
   int n = 0;
   Node* temp = dlist->head;
@@ -277,11 +314,17 @@ int main(int argc, char *argv[]){
   
   if(argc >= 3){
     if(strcmp("-c", argv[1]) == 0){  
-  mergeSortBegin(dlist, argv[2]);
+      int status = mergeSortBegin(dlist, argv[2]);
+      if(status == 0){ //only prints the field if no errors occurred
+	export(dlist); //exports the dlist into csv
+      }
     }
   }
+  else{
+  printf("Nothing to sort. Please input a field to sort by with -c.\n");
+  return;
+  }
  
-  export(dlist); //exports the dlist into csv
-//  printData(dlist, split(dlist,dlist->head)->ndata);
- // Finish(dlist); //frees everything in dlist  
+  
+  Finish(dlist); //frees everything in dlist  
 }

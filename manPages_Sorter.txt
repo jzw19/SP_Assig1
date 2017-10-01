@@ -1,0 +1,100 @@
+Manual Pages for Sorter.c
+
+printData
+	
+	NAME
+		printData - prints the contents of a data struct.
+
+	SYNOPSIS
+		#include "Sorter.h"
+		printData(LL* dlist, data cdata);
+
+	DESCRIPTION
+		Prints the field name and the data in the the field.
+
+printTypes
+
+	NAME
+		printType - prints the type of a field.
+
+	SYNOPSIS
+		#include "Sorter.h"
+		printType(LL* dlist);
+
+	DESCRIPTION
+		Prints the type of a field. The type of the field is determined by the integer stored in the types array.
+
+addTail
+
+	NAME
+		addTail - takes a linked list of data and a new data element, then appends the new data element to the tail of the list.
+
+	SYNOPSIS
+		#include "Sorter.h"
+		addTail(LL* dlist, data cdata);
+
+	DESCRIPTION
+		Takes two arguments, a linked list of data and a new data. Adds the new data to a new node and puts that node at the end of a linked list.
+
+Finish
+
+	NAME
+		Finish - Frees everything in a linked list.
+
+	SYNOPSIS
+		#include "Sorter.h"
+		Finish(LL* dlist);
+
+	DESCRIPTION
+		Frees memory by going through an entire linked list and freeing each element in the list.
+
+initializeList
+
+	NAME
+		initializeList - initializes the numfields, types, and fields in the linked list.
+
+	SYNOPSIS
+		#include "Sorter.h"
+		initializeList(LL* dlist, char* fields);
+
+	DESCRIPTION
+		Initializes the numfields, types and fields in the linked list. Removes newline characters and special characters.
+
+initializeListTypes
+
+	NAME
+		initializeListTypes - determines what type of data belongs to what field.
+
+	SYNOPSIS
+		#include "Sorter.h"
+		initializeListTypes(LL* dlist);
+
+	DESCRIPTION
+		Takes a linked list of data and determines the datatype of each field. Assigns an integer to an array corresponding to the datatype of each field.
+
+export
+
+	NAME
+		export - writes data list to a file.
+
+	SYNOPSIS
+		#include "Sorter.h"
+		export(LL* dlist);
+
+	DESCRIPTION
+		Exports data from a data list to a CSV file. Prints a newline character at the end of each row.
+
+trimSpaces
+
+	NAME
+		trimSpaces - trims trailing whitespace and garbage characters.
+
+	SYNOPSIS
+		#include "Sorter.h"
+		trimSpaces(char* str);
+
+	DESCRIPTION
+		Removes whitespace before and after relevant content. Also removes garbage characters.
+
+
+
