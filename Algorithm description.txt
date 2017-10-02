@@ -1,0 +1,22 @@
+The extra metadata that I needed were an array to store the names of the fields, an array to keep track of what type each field was, and a counter to keep track of how many fields there were.
+My algorithm first reads in the line with all the titles, then it seperated the field names by the commas.
+It then mallocs a 2d string array, where the 2d array has as many spaces as fields. It then uses strdup to store every field name into thr 2d array in dlist.
+After that, it reads all the entries in the csv, all fields are stored in a 2d char array, as the types of every field is determined later. The program determines if any field has a , in it by checking for long quotes. 
+The string is stored without the quotes and they get added back in exporting. A piece of data has an int field to set if it has a comma or not. While storing there fields, trailing and leading white space is also trimmed.
+After all the data has been read in, the program looks at the head of the linked list to determine the types of every field. If the head is null, no types are set.
+The program determines if the string is a string, a float, or an long.
+By checking if there's a . in the string, we can determine that it can only be a string or a float. Likewise, if there's no ., it can only be a string or a long.
+After determining if it's a string or a long, it uses strtod to find any longs in the string, and then it makes sure that the pointer strtod ends at is the same as the end point for the string array, otherwise the string is a string with a long inside it, not just a long.
+If the program determines that the string contains nothing besides a long, it detemines that the currently inspected field must be a long, otherwise it must be a string. It does this same process for determining if something is a float or a string.
+After setting the types, it checks for a -c input, and if it received one it begins to run mergesort.
+In mergesort, it first checks that the field being sorted by exists, otherwise it prints an error.
+
+In mergesort, the only part of my program that relates to the typeless implementation is the merge() method.
+First, it checks which type of field is being sorted, string, float or long.
+If it's sorting a string, it converts all of the characters in the string to lowercase, to make sure sorting is in alphabetical order, then it simply uses strcmp to determine which node to return first.
+If it's sorting a long, it uses strtol to convert the string to a long, then does a comparison and returns the smaller long.
+The same thing is done with a float, but with strtof instead.
+After performing mergesort the program outputs the newly sorted csv using printf.
+After printing, all of the fields that have been used are freed, so it goes through every node in the linked list and frees all of the field entries in the data.
+After that the linked list fields are freed. 
+My program has no memory leaks, so every malloc is freed according to valgrind.
